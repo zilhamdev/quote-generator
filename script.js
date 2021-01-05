@@ -2,6 +2,9 @@
 const newQuoteBtn = document.getElementById("new-quote");
 newQuoteBtn.addEventListener("click", () => getQuote());
 
+//get Quote Container
+const quoteContainer = document.getElementById("quote-container");
+
 //get Quote Text
 const quote = document.getElementById("quote");
 
@@ -19,8 +22,22 @@ async function getQuote() {
     try {
         const response = await fetch(proxyUrl + apiUrl);
         const data = await response.json()
-        quote.innerText = data.quoteText;
-        author.innerText = data.quoteAuthor;
+        const { quoteText, quoteAuthor } = data;
+        
+        quote.innerText = quoteText;
+        
+        if (quoteAuthor.length <= 1) {
+            author.innerText = "Unknown";
+        } else {
+            author.innerText = quoteAuthor;
+        }
+
+        if (quoteText.length > 100) {
+            quote.classList.add("long-quote");
+        } else {
+            quote.classList.remove("long-quote");
+        }
+
         twitterBtn.setAttribute("href", `https://twitter.com/intent/tweet?text=${quote.innerText} - ${author.innerText}`);
     } catch (err) {
         getQuote();
@@ -29,4 +46,3 @@ async function getQuote() {
 
 // On Load
 getQuote();
-
