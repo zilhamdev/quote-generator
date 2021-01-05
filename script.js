@@ -17,21 +17,19 @@ const twitterBtn = document.getElementById("twitter");
 //get loader
 const loader = document.getElementById("loader");
 
-//show loading function
-function loading() {
+function showLoadingSpinner() {
     loader.hidden = false;
     quoteContainer.hidden = true;
 }
 
-//hide loading function
-function hideLoading() {
+function hideLoadingSpinner() {
     loader.hidden = true;
     quoteContainer.hidden = false;
 }
 
 // Get quote from API
 async function getQuote() {
-    loading();
+    showLoadingSpinner();
     const proxyUrl = "https://zildev-cors.herokuapp.com/";
     const apiUrl = "http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json";
     try {
@@ -52,9 +50,9 @@ async function getQuote() {
             quote.classList.remove("long-quote");
         }
         twitterBtn.setAttribute("href", `https://twitter.com/intent/tweet?text=${quote.innerText} - ${author.innerText}`);
-        hideLoading();
+        hideLoadingSpinner();
     } catch (err) {
-        getQuote();
+        console.log(err);
     }
 }
 
